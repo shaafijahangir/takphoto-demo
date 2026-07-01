@@ -3,7 +3,7 @@
 # Custom domain: add it under Settings → Custom Domains once the client wants one.
 services:
   - type: web
-    name: takphoto-demo
+    name: phototak
     runtime: node
     plan: free
     # Seed runs at build time so the SQLite DB ships populated. Free tier has no

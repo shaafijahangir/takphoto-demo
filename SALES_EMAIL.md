@@ -40,7 +40,7 @@ feel, built to load fast and look sharp on a phone.
 
 Here's a working version with the visa photo booking live:
 
-https://takphoto-demo.onrender.com/
+https://phototak.onrender.com/
 
 No charge to look. If you like it, we make it yours: your real photos, your domain,
 live in a few days — and we hook the booking alerts straight into your Gmail. If it's
@@ -58,7 +58,7 @@ info@thebaseblocks.com · (236) 882-5428
 
 **Subject:** re: booking page for Photo Tak
 
-Hi again — quick nudge. The demo's still up: https://takphoto-demo.onrender.com/
+Hi again — quick nudge. The demo's still up: https://phototak.onrender.com/
 
 The part that tends to land: people can lock in a passport or visa photo slot before
 they leave the house, and your team gets a heads-up email for every booking — no phone
@@ -70,7 +70,7 @@ Shaafi · The Base Blocks · (236) 882-5428
 ---
 
 ## Notes for sending
-- Live demo URL: https://takphoto-demo.onrender.com/
+- Live demo URL: https://phototak.onrender.com/
 - Find the real recipient/owner name if you can; open with it instead of "Photo Tak Team".
 - Keep it plain text. No images, no signature graphics. Read like a person wrote it.
 - Both you and the studio are in Victoria — lean on the local angle.
