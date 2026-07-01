@@ -1,0 +1,21 @@
+# Render Blueprint — deploys the Photo Tak demo as a 24/7 Node web service.
+# Teardown: delete the service in the Render dashboard (or remove this file + sync).
+# Custom domain: add it under Settings → Custom Domains once the client wants one.
+services:
+  - type: web
+    name: takphoto-demo
+    runtime: node
+    plan: free
+    # Seed runs at build time so the SQLite DB ships populated. Free tier has no
+    # persistent disk, so bookings reset on each redeploy/restart — fine for a demo.
+    buildCommand: npm install && npm run seed && npm run build
+    startCommand: npx next start -p $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: "24.11.0"
+      # Studio inbox that booking alerts go to.
+      - key: NOTIFY_TO
+        value: "takphoto.inc@gmail.com"
+      # To send REAL booking emails, add RESEND_API_KEY as a secret in the
+      # Render dashboard (Environment tab). Without it, alerts log to the
+      # service console only — the demo still works end to end.
