@@ -2,7 +2,7 @@ export interface Service {
   id: number;
   slug: string;
   name: string;
-  /** e.g. "Canada" | "United States" — the issuing authority. */
+  /** e.g. "Canada" | "United States"; the issuing authority. */
   country: string;
   /** Printed photo size, human readable. e.g. "35 × 45 mm". */
   size_label: string;

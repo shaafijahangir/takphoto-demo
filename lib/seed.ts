@@ -21,7 +21,7 @@ const SERVICES: SeedService[] = [
     country: "Canada",
     size_label: "35 × 45 mm",
     duration_min: 15,
-    price: 20,
+    price: 30,
     description:
       "IRCC-compliant photos for Canadian visa and travel-document applications. Printed on-site and checked against the current government spec before you leave.",
     specs: [
@@ -37,7 +37,7 @@ const SERVICES: SeedService[] = [
     country: "United States",
     size_label: "2 × 2 in (51 × 51 mm)",
     duration_min: 15,
-    price: 25,
+    price: 30,
     description:
       "US Department of State–compliant 2×2 inch photos for visa (DS-160), green card, and passport applications. Digital copy for online uploads available on request.",
     specs: [

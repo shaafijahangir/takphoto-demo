@@ -50,7 +50,7 @@ function init(): DatabaseSync {
 
 export const db = g.__takDb ?? (g.__takDb = init());
 
-/** Typed query helpers — node:sqlite returns loosely-typed rows. */
+/** Typed query helpers; node:sqlite returns loosely-typed rows. */
 export function all<T>(sql: string, ...params: any[]): T[] {
   return db.prepare(sql).all(...params) as unknown as T[];
 }

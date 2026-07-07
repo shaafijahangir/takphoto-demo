@@ -6,37 +6,37 @@ const SERVICES = [
     title: "Wedding Photography",
     body: "Beautiful, timeless wedding photography throughout Victoria and Vancouver Island.",
     img: "https://images.unsplash.com/photo-1519741497674-611481863552?w=700&q=80&auto=format&fit=crop",
-    href: "#contact",
+    href: "#pricing",
   },
   {
     title: "Modelling & Portrait",
     body: "Elegant portraits that highlight your unique features and style.",
     img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80&auto=format&fit=crop",
-    href: "#contact",
+    href: "#pricing",
   },
   {
     title: "Baby & Family",
     body: "Natural family portraits that capture the love and connection you share.",
     img: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=700&q=80&auto=format&fit=crop",
-    href: "#contact",
+    href: "#pricing",
   },
   {
     title: "Corporate Headshots",
     body: "Professional, modern headshots that showcase confidence and authenticity.",
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80&auto=format&fit=crop",
-    href: "#contact",
+    href: "#pricing",
   },
   {
     title: "Real Estate",
     body: "Premium real estate photography that helps listings sell faster.",
     img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80&auto=format&fit=crop",
-    href: "#contact",
+    href: "#pricing",
   },
   {
     title: "Passport & Visa Photos",
     body: "Government-compliant Canadian & US photos, printed and verified in ~15 minutes.",
     img: "https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=700&q=80&auto=format&fit=crop",
-    href: "#book",
+    href: "/book",
     featured: true,
   },
 ];
@@ -64,7 +64,7 @@ export default function ServicesGrid() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={s.img}
-                  alt={`${s.title} — Photo Tak Victoria BC`}
+                  alt={`${s.title}, Photo Tak Victoria BC`}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />
                 {s.featured && (

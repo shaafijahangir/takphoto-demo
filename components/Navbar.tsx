@@ -7,7 +7,8 @@ import { PhoneIcon, MapPinIcon } from "@/components/icons";
 const LINKS = [
   { href: "/#work", label: "Work" },
   { href: "/#services", label: "Services" },
-  { href: "/#book", label: "Passport & Visa" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/book", label: "Passport & Visa" },
   { href: "/#why", label: "Why Us" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -66,7 +67,7 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a href="/#book" className="btn-primary !px-5 !py-2 text-sm">
+            <a href="/book" className="btn-primary !px-5 !py-2 text-sm">
               Book Visa Photo
             </a>
             <button

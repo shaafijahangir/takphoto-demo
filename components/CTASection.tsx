@@ -22,7 +22,7 @@ export default function CTASection() {
             We&apos;ll take care of the rest.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#book" className="btn-primary">
+            <a href="/book" className="btn-primary">
               Book Passport / Visa Photo
               <ArrowRightIcon className="h-4 w-4" />
             </a>

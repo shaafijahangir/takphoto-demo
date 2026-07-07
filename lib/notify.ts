@@ -39,14 +39,14 @@ function bodyFor(n: BookingNotice): string {
     `Email:      ${n.email}`,
     `Phone:      ${n.phone}`,
     ``,
-    `— Sent automatically by the Photo Tak booking system.`,
+    `Sent automatically by the Photo Tak booking system.`,
   ].join("\n");
 }
 
 /**
  * Fire a booking notification. Sends a real email through Resend when
  * RESEND_API_KEY is present; otherwise logs to the console and appends to
- * data/notifications.log so the demo runs with zero secrets. Never throws — a
+ * data/notifications.log so the demo runs with zero secrets. Never throws; a
  * failed notification must not fail the customer's booking.
  */
 export async function notifyBooking(n: BookingNotice): Promise<void> {
@@ -78,7 +78,7 @@ export async function notifyBooking(n: BookingNotice): Promise<void> {
       return;
     }
 
-    // No provider configured — demo/dev fallback.
+    // No provider configured; demo/dev fallback.
     console.log(`\n[notify] (no RESEND_API_KEY) would email ${NOTIFY_TO}:\n${subject}\n${body}\n`);
     const line = `=== ${new Date().toISOString()} → ${NOTIFY_TO} ===\n${subject}\n${body}\n\n`;
     fs.appendFile(LOG_PATH, line, () => {});

@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Photo Tak · Victoria Photography + Passport & Visa Photos",
   description:
-    "Luxury photography and videography in Victoria, BC — plus fast, guaranteed-compliant Canadian and US visa & passport photos. Book your 15-minute photo appointment online.",
+    "Luxury photography and videography in Victoria, BC. Fast, guaranteed-compliant Canadian and US visa & passport photos. Book your 15-minute photo appointment online.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

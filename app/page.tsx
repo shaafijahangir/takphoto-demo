@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import WhatWeDo from "@/components/WhatWeDo";
 import FeaturedWork from "@/components/FeaturedWork";
 import ServicesGrid from "@/components/ServicesGrid";
-import GovPhotoBooking from "@/components/GovPhotoBooking";
+import PricingSection from "@/components/PricingSection";
 import WhyChoose from "@/components/WhyChoose";
 import Testimonials from "@/components/Testimonials";
 import CTASection from "@/components/CTASection";
@@ -18,7 +18,7 @@ export default function HomePage() {
         <WhatWeDo />
         <FeaturedWork />
         <ServicesGrid />
-        <GovPhotoBooking />
+        <PricingSection />
         <WhyChoose />
         <Testimonials />
         <CTASection />

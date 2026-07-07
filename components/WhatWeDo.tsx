@@ -5,7 +5,7 @@ const ITEMS = [
   {
     icon: CameraIcon,
     title: "Photography",
-    body: "From intimate portraits to grand celebrations — weddings, family portraits, and professional business photography, each session crafted to reflect your story.",
+    body: "From intimate portraits to grand celebrations: weddings, family portraits, and professional business photography, each session crafted to reflect your story.",
   },
   {
     icon: VideoIcon,
@@ -15,8 +15,8 @@ const ITEMS = [
   {
     icon: IdCardIcon,
     title: "Passport & Visa Photos",
-    body: "Government-compliant Canadian and US visa & passport photos — printed, checked, and in your hands in about 15 minutes. Book a slot below.",
-    href: "#book",
+    body: "Government-compliant Canadian and US visa & passport photos, printed, checked, and in your hands in about 15 minutes. Book a slot below.",
+    href: "/book",
     cta: "Book a slot",
     highlight: true,
   },
@@ -31,7 +31,7 @@ export default function WhatWeDo() {
           Capturing life&apos;s meaningful moments
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-muted">
-          Luxury photography and videography in Victoria — plus fast, compliant government photos when you need them.
+          Luxury photography and videography in Victoria, plus fast, compliant government photos when you need them.
         </p>
       </Reveal>
 

@@ -20,7 +20,7 @@ const SLIDES = [
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=80&auto=format&fit=crop",
     eyebrow: "Business Ready",
     title: "Corporate Headshots & Visa Photos",
-    sub: "Polished headshots and government-compliant passport & visa prints — done right, done fast.",
+    sub: "Polished headshots and government-compliant passport & visa prints, done right, done fast.",
   },
 ];
 
@@ -60,7 +60,7 @@ export default function Hero() {
           <p className="mt-5 max-w-xl text-lg text-paper/80">{SLIDES[i].sub}</p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#book" className="btn-primary">
+            <a href="/book" className="btn-primary">
               Book Passport / Visa Photo
               <ArrowRightIcon className="h-4 w-4" />
             </a>

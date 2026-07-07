@@ -11,7 +11,7 @@ const POINTS = [
   {
     icon: ClockIcon,
     title: "In and out in ~15 minutes",
-    body: "Book a slot, walk in, walk out with prints. No waiting room, no guesswork — one appointment, done.",
+    body: "Book a slot, walk in, walk out with prints. No waiting room, no guesswork. One appointment, done.",
   },
   {
     icon: IdCardIcon,
@@ -28,12 +28,12 @@ const POINTS = [
 export default function GovPhotoBooking() {
   return (
     <section id="book" className="scroll-mt-24 bg-cloud/60">
-      <div className="section-pad mx-auto grid max-w-8xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div className="section-pad mx-auto grid max-w-8xl gap-12 lg:grid-cols-[minmax(17rem,20rem)_minmax(0,1fr)] lg:items-start">
         {/* Left: value column */}
         <Reveal className="lg:sticky lg:top-28">
           <p className="eyebrow">Passport & Visa Photos</p>
           <h2 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            Government photos, done right — and done fast
+            Government photos, done right, done fast
           </h2>
           <p className="mt-4 max-w-lg text-muted">
             Skip the drugstore reprints. Book a 15-minute slot at our Victoria studio and leave with
@@ -59,7 +59,7 @@ export default function GovPhotoBooking() {
         </Reveal>
 
         {/* Right: the booking wizard */}
-        <Reveal delay={120}>
+        <Reveal delay={120} className="min-w-0">
           <BookingWizard />
         </Reveal>
       </div>

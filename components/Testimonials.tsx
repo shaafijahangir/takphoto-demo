@@ -8,7 +8,7 @@ const REVIEWS = [
     role: "Wedding Clients",
   },
   {
-    quote: "Needed a US visa photo last minute — booked online, walked in, and had perfect prints in fifteen minutes. Accepted with zero issues.",
+    quote: "Needed a US visa photo last minute, so I booked online, walked in, and had perfect prints in fifteen minutes. Accepted with zero issues.",
     name: "Priya N.",
     role: "US Visa Photo",
   },

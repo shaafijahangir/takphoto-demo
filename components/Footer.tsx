@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="font-display text-xl font-bold">Photo Tak</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/65">
-              Luxury photography and videography in Victoria, BC — plus fast, government-compliant
+              Luxury photography and videography in Victoria, BC. Fast, government-compliant
               passport and visa photos. Warm, modern storytelling for weddings, portraits, and brands.
             </p>
             <div className="mt-5 flex gap-3">
@@ -32,7 +32,8 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-paper/70">
               <li><a href="/#work" className="hover:text-paper">Portfolio</a></li>
               <li><a href="/#services" className="hover:text-paper">Services</a></li>
-              <li><a href="/#book" className="hover:text-paper">Passport & Visa Photos</a></li>
+              <li><a href="/#pricing" className="hover:text-paper">Pricing</a></li>
+              <li><a href="/book" className="hover:text-paper">Passport & Visa Photos</a></li>
               <li><a href="/#why" className="hover:text-paper">Why Photo Tak</a></li>
             </ul>
           </div>

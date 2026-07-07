@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "server error" }, { status: 500 });
   }
 
-  // Notify the studio inbox. Awaited but non-fatal — booking already committed.
+  // Notify the studio inbox. Awaited but non-fatal; booking already committed.
   await notifyBooking({
     reference: result.reference,
     service: result.service,

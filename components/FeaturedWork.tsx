@@ -24,7 +24,7 @@ export default function FeaturedWork() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={t.img}
-                  alt={`${t.label} photography — Photo Tak Victoria BC`}
+                  alt={`${t.label} photography, Photo Tak Victoria BC`}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
