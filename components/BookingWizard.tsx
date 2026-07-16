@@ -37,6 +37,101 @@ function nextDays(n: number): { value: string; label: string; closed: boolean }[
   return out;
 }
 
+/**
+ * Per-service wording for the wizard. Same flow underneath: booking a wedding
+ * consult and booking a visa photo are different errands, and generic copy
+ * ("Pick a date & time") is what makes a booking form feel stock. Text only,
+ * no behaviour changes here.
+ */
+interface Copy {
+  datetimeHeading: string;
+  datetimeHint: string;
+  detailsHeading: string;
+  detailsHint: string;
+  confirmHeading: string;
+  confirmCta: string;
+  doneHeading: string;
+  doneBody: string;
+}
+
+const DEFAULT_COPY: Copy = {
+  datetimeHeading: "Pick a date & time",
+  datetimeHint: "Choose a day and we'll show you what's still open.",
+  detailsHeading: "Your details",
+  detailsHint: "We'll send your confirmation here and hold your slot.",
+  confirmHeading: "Confirm your appointment",
+  confirmCta: "Confirm Booking",
+  doneHeading: "Appointment Confirmed",
+  doneBody: "See you at 623 Broughton St, Victoria. Your slot is held and the studio has been notified.",
+};
+
+const COPY: Record<string, Partial<Copy>> = {
+  "canada-visa-photo": {
+    datetimeHeading: "When can you pop in?",
+    datetimeHint: "You're in and out in about 15 minutes, prints in hand.",
+    confirmHeading: "Confirm your photo appointment",
+    doneHeading: "Your photo slot is booked",
+    doneBody: "See you at 623 Broughton St. Bring your glasses off and we'll do the rest. Prints are checked against the IRCC spec before you leave.",
+  },
+  "us-visa-photo": {
+    datetimeHeading: "When can you pop in?",
+    datetimeHint: "About 15 minutes for your 2 × 2 in prints, checked and done.",
+    confirmHeading: "Confirm your photo appointment",
+    doneHeading: "Your photo slot is booked",
+    doneBody: "See you at 623 Broughton St. Ask on the day if you need the digital file for an online form.",
+  },
+  "corporate-headshot": {
+    datetimeHeading: "When can you sit for us?",
+    datetimeHint: "Twenty minutes under the lights is all it takes.",
+    detailsHint: "We'll confirm here and send your retouched file to the same address.",
+    confirmHeading: "Confirm your sitting",
+    confirmCta: "Book my sitting",
+    doneHeading: "Your sitting is booked",
+    doneBody: "See you at 623 Broughton St. Bring a couple of options to wear and we'll help you pick on the day.",
+  },
+  "portrait-modelling": {
+    datetimeHeading: "When should we shoot?",
+    datetimeHint: "An hour in the studio, or tell us where you'd rather be.",
+    detailsHint: "We'll confirm here and follow up about looks and location.",
+    confirmHeading: "Confirm your session",
+    confirmCta: "Book my session",
+    doneHeading: "Your session is booked",
+    doneBody: "See you at 623 Broughton St. We'll reach out beforehand to talk through looks, wardrobe, and whether you'd rather shoot on location.",
+  },
+  "baby-family-session": {
+    datetimeHeading: "When suits everyone?",
+    datetimeHint: "About an hour. Pick the time of day your little ones are happiest.",
+    detailsHint: "We'll confirm here and check in about your group before the day.",
+    confirmHeading: "Confirm your family session",
+    confirmCta: "Book our session",
+    doneHeading: "Your family session is booked",
+    doneBody: "See you at 623 Broughton St. We'll be in touch about who's coming and where you'd like to shoot, then we'll quote it properly. No rush on the day.",
+  },
+  "wedding-consultation": {
+    datetimeHeading: "When can we talk it through?",
+    datetimeHint: "Half an hour, no charge, no obligation. Coffee is on us.",
+    detailsHint: "We'll confirm here. Feel free to bring your partner along.",
+    confirmHeading: "Confirm your consultation",
+    confirmCta: "Book our consult",
+    doneHeading: "Your consultation is booked",
+    doneBody: "See you at 623 Broughton St. Bring your date, your venue, and anything you've saved. We'll show you full galleries and quote your day properly afterwards.",
+  },
+  "real-estate-consultation": {
+    datetimeHeading: "When can we go over the listing?",
+    datetimeHint: "Half an hour to scope the property and your turnaround.",
+    detailsHint: "We'll confirm here and follow up with the property details.",
+    confirmHeading: "Confirm your consultation",
+    confirmCta: "Book my consult",
+    doneHeading: "Your consultation is booked",
+    doneBody: "See you at 623 Broughton St. Bring the address and your timeline and we'll quote stills, twilight, and floor plans from there.",
+  },
+};
+
+function copyFor(s: Service | null | undefined): Copy {
+  if (!s) return DEFAULT_COPY;
+  return { ...DEFAULT_COPY, ...(COPY[s.slug] ?? {}) };
+}
+
 const GROUPS: { key: Service["category"]; title: string; blurb: string }[] = [
   {
     key: "gov",
@@ -80,6 +175,7 @@ export default function BookingWizard() {
   const [confirmed, setConfirmed] = useState<any>(null);
 
   const days = useMemo(() => nextDays(14), []);
+  const copy = copyFor(service);
 
   // Load services, then honour ?service=<slug> from a card on the homepage by
   // preselecting it and opening on the date step. Read off window.location so
@@ -240,7 +336,8 @@ export default function BookingWizard() {
           {/* STEP: DATE & TIME */}
           {current === "datetime" && (
             <div data-step="datetime">
-              <h3 className="font-display text-xl font-semibold text-ink">Pick a date &amp; time</h3>
+              <h3 className="font-display text-xl font-semibold text-ink">{copy.datetimeHeading}</h3>
+              <p className="mt-1 text-sm text-muted">{copy.datetimeHint}</p>
               <div className="scroll-crimson mt-4 flex gap-2 overflow-x-auto pb-2">
                 {days.map((d) => (
                   <button
@@ -290,8 +387,8 @@ export default function BookingWizard() {
           {/* STEP: DETAILS */}
           {current === "details" && (
             <div data-step="details">
-              <h3 className="font-display text-xl font-semibold text-ink">Your details</h3>
-              <p className="mt-1 text-sm text-muted">We&apos;ll send your confirmation here and hold your slot.</p>
+              <h3 className="font-display text-xl font-semibold text-ink">{copy.detailsHeading}</h3>
+              <p className="mt-1 text-sm text-muted">{copy.detailsHint}</p>
               <div className="mt-5 grid gap-4">
                 <label className="block">
                   <span className="text-sm text-ink/70">Full name</span>
@@ -331,7 +428,7 @@ export default function BookingWizard() {
           {/* STEP: CONFIRM */}
           {current === "confirm" && service && slot && (
             <div data-step="confirm">
-              <h3 className="font-display text-xl font-semibold text-ink">Confirm your appointment</h3>
+              <h3 className="font-display text-xl font-semibold text-ink">{copy.confirmHeading}</h3>
               <dl className="mt-5 divide-y divide-ink/10 text-sm">
                 <Row k="Service" v={serviceLine(service)} />
                 <Row k="Price" v={priceLine(service)} />
@@ -387,7 +484,7 @@ export default function BookingWizard() {
               disabled={submitting}
               className="btn-primary !px-6 !py-2 text-sm"
             >
-              {submitting ? "Booking…" : "Confirm Booking"}
+              {submitting ? "Booking…" : copy.confirmCta}
             </button>
           )}
         </div>
@@ -433,7 +530,8 @@ function priceLine(s: Service): string {
 }
 
 function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void }) {
-  const s = booking.service;
+  const s: Service = booking.service;
+  const copy = copyFor(s);
   return (
     <div className="animate-scale-in rounded-2xl border border-ink/10 bg-white p-8 text-center shadow-card" data-testid="confirmation">
       <div
@@ -442,7 +540,7 @@ function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void 
       >
         <CheckCircleIcon className="h-10 w-10" />
       </div>
-      <h2 className="mt-4 font-display text-3xl font-bold text-ink">Appointment Confirmed</h2>
+      <h2 className="mt-4 font-display text-3xl font-bold text-ink">{copy.doneHeading}</h2>
       <p className="mt-2 text-muted">
         Your booking reference is{" "}
         <span className="font-semibold text-crimson" data-testid="booking-ref">{booking.reference}</span>.
@@ -453,9 +551,8 @@ function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void 
         <Row k="Date" v={booking.date} />
         <Row k="Time" v={`${minutesToLabel(booking.start)} – ${minutesToLabel(booking.end)}`} />
       </div>
-      <p className="mt-6 text-sm text-muted">
-        See you at 623 Broughton St, Victoria. Your slot is held and the studio has been
-        notified. Quote your reference if you need to move it: (778) 433-8257.
+      <p className="mx-auto mt-6 max-w-md text-sm text-muted">
+        {copy.doneBody} Quote your reference if you need to move it: (778) 433-8257.
       </p>
       <div className="mt-6 flex justify-center gap-3">
         <a href="/" className="btn-outline !px-5 !py-2 text-sm">Back to home</a>
