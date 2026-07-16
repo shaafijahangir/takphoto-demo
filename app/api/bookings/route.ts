@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db, tx, get } from "@/lib/db";
 import { hasConflict, isOpenFor } from "@/lib/availability";
 import { notifyBooking } from "@/lib/notify";
+import { googleCalendarUrl } from "@/lib/calendar";
 import { type Service } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -101,6 +102,17 @@ export async function POST(req: Request) {
         date: result.date,
         start: result.start,
         end: result.end,
+        // Prefilled "Add to Google Calendar" link for the confirmation screen.
+        googleCalendarUrl: googleCalendarUrl({
+          reference: result.reference,
+          service: result.service,
+          customer_name: String(name),
+          email: String(email),
+          phone: String(phone),
+          date: result.date,
+          start_min: result.start,
+          end_min: result.end,
+        }),
       },
     },
     { status: 201 }

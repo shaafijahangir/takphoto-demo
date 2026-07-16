@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { all } from "@/lib/db";
 import { minutesToLabel, toLocalDateLabel } from "@/lib/types";
 import { toLocalDate } from "@/lib/availability";
-import { CalendarIcon, ClockIcon, PhoneIcon } from "@/components/icons";
+import { ArrowRightIcon, CalendarIcon, ClockIcon, PhoneIcon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +64,33 @@ export default function SchedulePage() {
           Every appointment booked online, oldest first. This is the page you open with
           your coffee: no inbox to dig through, no phone tag, just the day laid out.
         </p>
+
+        <div className="mt-6 rounded-2xl border border-ink/10 bg-white p-6">
+          <div className="flex items-start gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-crimson/10 text-crimson">
+              <CalendarIcon className="h-5 w-5" />
+            </span>
+            <div className="min-w-0">
+              <h2 className="font-semibold text-ink">Rather see this in Google Calendar?</h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted">
+                Bookings can feed straight into the calendar you already have open in
+                Gmail. In Google Calendar, go to <span className="font-medium text-ink">Other
+                calendars</span>, then <span className="font-medium text-ink">From URL</span>,
+                and paste this address. New appointments appear on their own.
+              </p>
+              <code className="mt-3 block overflow-x-auto rounded-lg bg-cloud px-3 py-2 text-xs text-ink">
+                https://phototak.onrender.com/calendar.ics
+              </code>
+              <a
+                href="/calendar.ics"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-crimson transition-all hover:gap-2.5"
+              >
+                Download the feed
+                <ArrowRightIcon className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
 
         {total === 0 ? (
           <div className="mt-10 rounded-2xl border border-dashed border-ink/15 bg-white p-10 text-center">

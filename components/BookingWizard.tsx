@@ -11,6 +11,7 @@ import {
   CheckCircleIcon,
   ClockIcon,
   ArrowRightIcon,
+  CalendarIcon,
 } from "@/components/icons";
 
 type Slot = { min: number; label: string };
@@ -554,6 +555,20 @@ function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void 
       <p className="mx-auto mt-6 max-w-md text-sm text-muted">
         {copy.doneBody} Quote your reference if you need to move it: (778) 433-8257.
       </p>
+
+      {booking.googleCalendarUrl && (
+        <a
+          href={booking.googleCalendarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-testid="add-to-google"
+          className="mt-6 inline-flex items-center gap-2 rounded-lg border border-ink/15 px-4 py-2.5 text-sm font-medium text-ink transition hover:border-crimson hover:text-crimson"
+        >
+          <CalendarIcon className="h-4 w-4" />
+          Add to Google Calendar
+        </a>
+      )}
+
       <div className="mt-6 flex justify-center gap-3">
         <a href="/" className="btn-outline !px-5 !py-2 text-sm">Back to home</a>
         <button onClick={onAgain} className="btn-primary !px-5 !py-2 text-sm" data-testid="book-another">

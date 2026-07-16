@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start -p 3100",
     "seed": "tsx lib/seed.ts",
+    "check:calendar": "tsx scripts/check-calendar.mts",
     "lint": "next lint"
   },
   "dependencies": {

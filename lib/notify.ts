@@ -1,6 +1,7 @@
 import path from "node:path";
 import fs from "node:fs";
 import { minutesToLabel, priceLabel, type Service } from "./types";
+import { googleCalendarUrl } from "./calendar";
 
 /**
  * Where booking alerts go. This is a DEMO, so alerts default to The Base Blocks,
@@ -44,6 +45,9 @@ function bodyFor(n: BookingNotice): string {
     `Customer:   ${n.customer_name}`,
     `Email:      ${n.email}`,
     `Phone:      ${n.phone}`,
+    ``,
+    `Add to Google Calendar:`,
+    googleCalendarUrl(n),
     ``,
     `Your full schedule: ${SITE_URL}/schedule`,
     ``,
