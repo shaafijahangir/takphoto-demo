@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import GovPhotoBooking from "@/components/GovPhotoBooking";
+import BookingSection from "@/components/BookingSection";
 
 export const metadata: Metadata = {
-  title: "Book a Passport or Visa Photo · Photo Tak Victoria",
+  title: "Book an Appointment · Photo Tak Victoria",
   description:
-    "Book a 15-minute appointment for government-compliant Canadian or US passport & visa photos at Photo Tak, Victoria BC.",
+    "Book any Photo Tak service online: passport & visa photos, corporate headshots, portraits, family sessions, and free wedding or real estate consultations in Victoria BC.",
 };
 
 export default function BookPage() {
@@ -14,7 +14,7 @@ export default function BookPage() {
     <>
       <Navbar />
       <main className="pt-8">
-        <GovPhotoBooking />
+        <BookingSection />
       </main>
       <Footer />
     </>

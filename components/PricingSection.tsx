@@ -7,26 +7,27 @@ type Tier = {
   unit?: string;
   duration: string;
   includes: string[];
+  /** Always a /book link: every tier on this page is bookable online. */
   href: string;
   cta: string;
-  featured?: boolean;
 };
 
 // Prices reflect what the studio has confirmed by email; the rest are
-// quote-based until the studio hands over exact package pricing.
+// quote-based until the studio hands over exact package pricing. Every tier
+// books online, so nothing here dead-ends in an inbox.
 const STUDIO: Tier[] = [
   {
     name: "Corporate Headshots",
     price: "$50",
     unit: "per digital file",
-    duration: "~20 min session",
+    duration: "~20 min sitting",
     includes: [
       "Professional lighting & retouch",
       "High-res digital file, ready to use",
       "Extra files $50 each",
     ],
-    href: "/#contact",
-    cta: "Enquire",
+    href: "/book?service=corporate-headshot",
+    cta: "Book a sitting",
   },
   {
     name: "Portrait & Modelling",
@@ -38,20 +39,47 @@ const STUDIO: Tier[] = [
       "Selection of edited images",
       "Add digital files as needed",
     ],
-    href: "/#contact",
-    cta: "Enquire",
+    href: "/book?service=portrait-modelling",
+    cta: "Book a session",
   },
   {
-    name: "Baby, Family & Events",
-    price: "Custom quote",
-    duration: "Varies by shoot",
+    name: "Baby & Family",
+    price: "Quote",
+    unit: "based on your group",
+    duration: "~60 min session",
     includes: [
       "Tailored to group size & location",
-      "Weddings, families, celebrations",
+      "Studio or on-location",
       "Digital gallery delivered",
     ],
-    href: "/#contact",
-    cta: "Get a quote",
+    href: "/book?service=baby-family-session",
+    cta: "Book a session",
+  },
+  {
+    name: "Weddings",
+    price: "No charge",
+    unit: "30 minute consult",
+    duration: "Quoted after we talk",
+    includes: [
+      "Talk through date, venue & coverage",
+      "See full wedding galleries in person",
+      "No charge, no obligation",
+    ],
+    href: "/book?service=wedding-consultation",
+    cta: "Book a consult",
+  },
+  {
+    name: "Real Estate",
+    price: "No charge",
+    unit: "30 minute consult",
+    duration: "Quoted after we talk",
+    includes: [
+      "Go over property size & turnaround",
+      "Stills, twilight & floor plans available",
+      "No charge, no obligation",
+    ],
+    href: "/book?service=real-estate-consultation",
+    cta: "Book a consult",
   },
 ];
 
@@ -66,9 +94,8 @@ const GOV: Tier[] = [
       "Checked against current gov spec",
       "Free reshoot if ever rejected",
     ],
-    href: "/book",
-    cta: "Book online",
-    featured: true,
+    href: "/book?service=canada-visa-photo",
+    cta: "Book a slot",
   },
   {
     name: "US Visa / Passport Photo",
@@ -80,26 +107,16 @@ const GOV: Tier[] = [
       "Digital file for online forms on request",
       "Free reshoot if ever rejected",
     ],
-    href: "/book",
-    cta: "Book online",
-    featured: true,
+    href: "/book?service=us-visa-photo",
+    cta: "Book a slot",
   },
 ];
 
 function TierCard({ t }: { t: Tier }) {
   return (
-    <div
-      className={`card card-hover flex h-full flex-col p-7 ${
-        t.featured ? "ring-1 ring-crimson/30" : ""
-      }`}
-    >
+    <div className="card card-hover flex h-full flex-col p-7 ring-1 ring-crimson/30">
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-display text-lg font-semibold text-ink">{t.name}</h3>
-        {t.featured && (
-          <span className="shrink-0 rounded-full bg-crimson px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-paper">
-            Book online
-          </span>
-        )}
       </div>
 
       <div className="mt-4 flex items-baseline gap-2">
@@ -143,9 +160,8 @@ export default function PricingSection() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted">
             Here&apos;s what everything costs and how long it takes, so you know before you
-            walk in. Passport and visa photos are a fixed price and you can book them
-            online. For studio sessions, send us a quick note and we&apos;ll take care of the
-            details.
+            walk in. Every service books online. Weddings and listings start with a free
+            30-minute consult so we can quote the real thing instead of guessing.
           </p>
         </Reveal>
 

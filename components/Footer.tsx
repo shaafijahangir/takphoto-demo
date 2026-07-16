@@ -33,7 +33,7 @@ export default function Footer() {
               <li><a href="/#work" className="hover:text-paper">Portfolio</a></li>
               <li><a href="/#services" className="hover:text-paper">Services</a></li>
               <li><a href="/#pricing" className="hover:text-paper">Pricing</a></li>
-              <li><a href="/book" className="hover:text-paper">Passport & Visa Photos</a></li>
+              <li><a href="/book" className="hover:text-paper">Book Online</a></li>
               <li><a href="/#why" className="hover:text-paper">Why Photo Tak</a></li>
             </ul>
           </div>
@@ -45,7 +45,10 @@ export default function Footer() {
                 <PhoneIcon className="h-4 w-4 text-sand" /> (778) 433-8257
               </li>
               <li className="flex items-center gap-2">
-                <MailIcon className="h-4 w-4 text-sand" /> hello@takphoto.ca
+                <MailIcon className="h-4 w-4 text-sand" />
+                <a href="mailto:takphoto.inc@gmail.com" className="hover:text-paper">
+                  takphoto.inc@gmail.com
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-sand" />

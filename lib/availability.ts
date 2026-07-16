@@ -1,5 +1,5 @@
 import { db, all } from "./db";
-import { STUDIO_OPEN, STUDIO_CLOSE, CLOSED_WEEKDAYS } from "./types";
+import { hoursFor } from "./types";
 
 const SLOT_STEP = 15; // minutes between candidate start times
 
@@ -18,15 +18,16 @@ function parseLocalDate(date: string): Date {
  * Open start-times (minutes from midnight) for the single photo station on a
  * given date, for an appointment of `durationMin`. Because there is one station,
  * ANY existing booking that day blocks overlapping times regardless of service.
- * Excludes closed weekdays and, for today, times already past.
+ * Hours come from STUDIO_HOURS per weekday, so a session can never start late
+ * enough to run past closing. Excludes closed days and, for today, times past.
  */
 export function getAvailableSlots(
   durationMin: number,
   date: string,
   now: Date = new Date()
 ): number[] {
-  const weekday = parseLocalDate(date).getDay();
-  if (CLOSED_WEEKDAYS.has(weekday)) return [];
+  const hours = hoursFor(parseLocalDate(date).getDay());
+  if (!hours) return [];
 
   const booked = all<Interval>(
     "SELECT start_min, end_min FROM bookings WHERE date = ?",
@@ -37,8 +38,8 @@ export function getAvailableSlots(
   const nowMin = now.getHours() * 60 + now.getMinutes();
 
   const slots: number[] = [];
-  const lastStart = STUDIO_CLOSE - durationMin;
-  for (let t = STUDIO_OPEN; t <= lastStart; t += SLOT_STEP) {
+  const lastStart = hours.close - durationMin;
+  for (let t = hours.open; t <= lastStart; t += SLOT_STEP) {
     const end = t + durationMin;
     if (isToday && t <= nowMin) continue;
     const clash = booked.some((b) => t < b.end_min && end > b.start_min);
@@ -47,7 +48,17 @@ export function getAvailableSlots(
   return slots;
 }
 
-/** Server-side conflict check used inside the booking transaction. */
+/**
+ * Whether the studio is open for the whole appointment. Checked server-side so
+ * a hand-crafted POST cannot land an appointment at 3am or on a Sunday.
+ */
+export function isOpenFor(date: string, start: number, end: number): boolean {
+  const hours = hoursFor(parseLocalDate(date).getDay());
+  if (!hours) return false;
+  return start >= hours.open && end <= hours.close;
+}
+
+/** Overlap with an existing booking. One station, so any overlap is a clash. */
 export function hasConflict(date: string, start: number, end: number): boolean {
   const row = db
     .prepare(

@@ -4,40 +4,40 @@ import { ShieldIcon, ClockIcon, IdCardIcon, SparkleIcon } from "@/components/ico
 
 const POINTS = [
   {
-    icon: ShieldIcon,
-    title: "Guaranteed compliant",
-    body: "Every photo is checked against the current government spec before you leave. If it's ever rejected, we reshoot and reprint free.",
+    icon: ClockIcon,
+    title: "Book any service online",
+    body: "Passport photos, headshots, portraits, families, weddings, listings. Pick a time that works, no phone tag, no waiting on a reply.",
   },
   {
-    icon: ClockIcon,
-    title: "In and out in ~15 minutes",
-    body: "Book a slot, walk in, walk out with prints. No waiting room, no guesswork. One appointment, done.",
+    icon: ShieldIcon,
+    title: "Government photos guaranteed",
+    body: "Every passport and visa photo is checked against the current spec before you leave. If it's ever rejected, we reshoot and reprint free.",
   },
   {
     icon: IdCardIcon,
-    title: "Canada & US sizes",
-    body: "35 × 45 mm for Canadian applications, 2 × 2 in for US visa, green card, and passport. Correct dimensions, every time.",
+    title: "Real hours, real availability",
+    body: "You only ever see times the studio is genuinely open and free. Mon to Fri 8:30am to 5pm, Sat 10am to 4pm.",
   },
   {
     icon: SparkleIcon,
-    title: "Digital copy included",
-    body: "Need to upload to an online form? Ask for the digital file and we'll email a spec-correct copy alongside your prints.",
+    title: "Weddings & listings: consult first",
+    body: "For a wedding or a property, book a free 30-minute consult. We'll talk through the day and quote it properly instead of guessing.",
   },
 ];
 
-export default function GovPhotoBooking() {
+export default function BookingSection() {
   return (
     <section id="book" className="scroll-mt-24 bg-cloud/60">
       <div className="section-pad mx-auto grid max-w-8xl gap-12 lg:grid-cols-[minmax(17rem,20rem)_minmax(0,1fr)] lg:items-start">
         {/* Left: value column */}
         <Reveal className="lg:sticky lg:top-28">
-          <p className="eyebrow">Passport & Visa Photos</p>
+          <p className="eyebrow">Book Online</p>
           <h2 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            Government photos, done right, done fast
+            Pick a time. We&apos;ll take it from there.
           </h2>
           <p className="mt-4 max-w-lg text-muted">
-            Skip the drugstore reprints. Book a 15-minute slot at our Victoria studio and leave with
-            prints that meet the exact Canadian or US requirements.
+            Everything the studio does can be booked right here, from a 15-minute visa photo
+            to a wedding consultation. Choose a service, grab a slot, and you&apos;re done.
           </p>
 
           <div className="mt-8 space-y-5">

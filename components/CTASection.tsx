@@ -18,12 +18,12 @@ export default function CTASection() {
             Need a passport, visa, or portrait session?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-paper/75">
-            Book a 15-minute government photo slot online, or reach out to plan a full session.
-            We&apos;ll take care of the rest.
+            Every service books online, from a 15-minute visa photo to a wedding consult.
+            Pick a time and we&apos;ll take care of the rest.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a href="/book" className="btn-primary">
-              Book Passport / Visa Photo
+              Book an Appointment
               <ArrowRightIcon className="h-4 w-4" />
             </a>
             <a href="#contact" className="btn-outline-light">

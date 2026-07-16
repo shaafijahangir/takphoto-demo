@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, tx, get } from "@/lib/db";
-import { hasConflict } from "@/lib/availability";
+import { hasConflict, isOpenFor } from "@/lib/availability";
 import { notifyBooking } from "@/lib/notify";
 import { type Service } from "@/lib/types";
 
@@ -49,6 +49,13 @@ export async function POST(req: Request) {
 
   const start = Number(startMin);
   const end = start + service.duration_min;
+
+  if (!isOpenFor(date, start, end)) {
+    return NextResponse.json(
+      { error: "The studio is closed then. Please pick a time inside opening hours." },
+      { status: 400 }
+    );
+  }
 
   let result;
   try {

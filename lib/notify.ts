@@ -3,11 +3,14 @@ import fs from "node:fs";
 import { minutesToLabel, priceLabel, type Service } from "./types";
 
 /**
- * Where booking alerts go. The studio asked for a shared inbox so whoever is on
- * shift sees a new passport/visa appointment come in.
+ * Where booking alerts go. This is a DEMO, so alerts default to The Base Blocks,
+ * not the studio's real inbox: nobody should be spammed by a stranger clicking
+ * through a sales demo. On handover, set NOTIFY_TO to takphoto.inc@gmail.com so
+ * whoever is on shift sees new appointments come in.
  */
-const NOTIFY_TO = process.env.NOTIFY_TO || "takphoto.inc@gmail.com";
+const NOTIFY_TO = process.env.NOTIFY_TO || "shaafi.jahangir@thebaseblocks.com";
 const NOTIFY_FROM = process.env.NOTIFY_FROM || "Photo Tak Bookings <bookings@takphoto.ca>";
+const SITE_URL = process.env.SITE_URL || "https://phototak.onrender.com";
 const LOG_PATH = path.join(process.cwd(), "data", "notifications.log");
 
 export interface BookingNotice {
@@ -26,18 +29,23 @@ function subjectFor(n: BookingNotice): string {
 }
 
 function bodyFor(n: BookingNotice): string {
+  const service = n.service.size_label
+    ? `${n.service.name} (${n.service.size_label})`
+    : n.service.name;
   return [
     `New ${n.service.name} appointment booked.`,
     ``,
     `Reference:  ${n.reference}`,
-    `Service:    ${n.service.name} (${n.service.size_label})`,
-    `Price:      ${priceLabel(n.service.price_cents)}`,
+    `Service:    ${service}`,
+    `Price:      ${n.service.price_display || priceLabel(n.service.price_cents)}`,
     `Date:       ${n.date}`,
     `Time:       ${minutesToLabel(n.start_min)} – ${minutesToLabel(n.end_min)}`,
     ``,
     `Customer:   ${n.customer_name}`,
     `Email:      ${n.email}`,
     `Phone:      ${n.phone}`,
+    ``,
+    `Your full schedule: ${SITE_URL}/schedule`,
     ``,
     `Sent automatically by the Photo Tak booking system.`,
   ].join("\n");

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   minutesToLabel,
-  priceLabel,
+  isClosedOn,
   type Service,
 } from "@/lib/types";
 import {
@@ -17,7 +17,7 @@ type Slot = { min: number; label: string };
 type StepKey = "service" | "datetime" | "details" | "confirm";
 
 const STEP_DEFS: { key: StepKey; label: string }[] = [
-  { key: "service", label: "Photo Type" },
+  { key: "service", label: "Service" },
   { key: "datetime", label: "Date & Time" },
   { key: "details", label: "Your Details" },
   { key: "confirm", label: "Confirm" },
@@ -32,15 +32,29 @@ function nextDays(n: number): { value: string; label: string; closed: boolean }[
     const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     const label =
       i === 0 ? "Today" : i === 1 ? "Tomorrow" : d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-    out.push({ value, label, closed: d.getDay() === 0 }); // Sundays closed
+    out.push({ value, label, closed: isClosedOn(d.getDay()) });
   }
   return out;
 }
 
+const GROUPS: { key: Service["category"]; title: string; blurb: string }[] = [
+  {
+    key: "gov",
+    title: "Passport & Visa Photos",
+    blurb: "Fixed price, printed and verified while you wait.",
+  },
+  {
+    key: "studio",
+    title: "Studio Sessions & Consultations",
+    blurb: "Sittings, sessions, and no-charge consults for weddings and listings.",
+  },
+];
+
 /**
- * Lean passport/visa booking wizard against a single studio station:
- * photo type → date & time → details → confirm. Availability comes from
+ * Booking wizard for every service the studio offers, against a single
+ * station: service → date & time → details → confirm. Availability comes from
  * /api/availability (all bookings share one timeline, so no double-booking).
+ * `?service=<slug>` preselects and jumps straight to picking a time.
  */
 export default function BookingWizard() {
   const steps = STEP_DEFS;
@@ -62,12 +76,28 @@ export default function BookingWizard() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState(false);
   const [confirmed, setConfirmed] = useState<any>(null);
 
   const days = useMemo(() => nextDays(14), []);
 
+  // Load services, then honour ?service=<slug> from a card on the homepage by
+  // preselecting it and opening on the date step. Read off window.location so
+  // this page stays statically renderable (useSearchParams would bail it out).
   useEffect(() => {
-    fetch("/api/services").then((r) => r.json()).then((d) => setServices(d.services ?? []));
+    fetch("/api/services")
+      .then((r) => r.json())
+      .then((d) => {
+        const list: Service[] = d.services ?? [];
+        setServices(list);
+        const slug = new URLSearchParams(window.location.search).get("service");
+        const preset = slug ? list.find((s) => s.slug === slug) : undefined;
+        if (preset) {
+          setService(preset);
+          setStep(1);
+        }
+      })
+      .catch(() => setLoadError(true));
   }, []);
 
   useEffect(() => {
@@ -139,43 +169,71 @@ export default function BookingWizard() {
           {/* STEP: SERVICE */}
           {current === "service" && (
             <div data-step="service">
-              <h3 className="font-display text-xl font-semibold text-ink">Which photo do you need?</h3>
-              <p className="mt-1 text-sm text-muted">Each appointment is ~15 minutes at our Broughton St studio.</p>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {services.map((s) => {
-                  const on = service?.id === s.id;
-                  const specs = s.specs.split("\n").filter(Boolean);
-                  return (
-                    <button
-                      key={s.id}
-                      data-testid="service-option"
-                      onClick={() => { setService(s); setSlot(null); }}
-                      className={`flex flex-col rounded-xl border p-5 text-left transition ${
-                        on ? "border-crimson bg-crimson/[0.05]" : "border-ink/12 hover:border-crimson/50"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <span className="block font-semibold text-ink">{s.name}</span>
-                          <span className="text-sm text-muted">{s.size_label}</span>
-                        </div>
-                        <span className="font-display text-lg font-bold text-crimson">{priceLabel(s.price_cents)}</span>
-                      </div>
-                      <ul className="mt-3 space-y-1.5">
-                        {specs.map((sp) => (
-                          <li key={sp} className="flex items-start gap-2 text-xs text-muted">
-                            <CheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-crimson" />
-                            {sp}
-                          </li>
-                        ))}
-                      </ul>
-                      <span className="mt-4 flex items-center gap-1.5 text-xs font-medium text-ink/60">
-                        <ClockIcon className="h-3.5 w-3.5" /> {s.duration_min} min appointment
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              <h3 className="font-display text-xl font-semibold text-ink">What can we shoot for you?</h3>
+              <p className="mt-1 text-sm text-muted">
+                Everything we do is bookable here, at our Broughton St studio.
+              </p>
+
+              {loadError && (
+                <p className="mt-5 rounded-lg bg-crimson/10 px-4 py-3 text-sm text-crimson">
+                  Could not load our services just now. Please refresh, or call the studio
+                  at (778) 433-8257.
+                </p>
+              )}
+
+              {GROUPS.map((g) => {
+                const inGroup = services.filter((s) => s.category === g.key);
+                if (inGroup.length === 0) return null;
+                return (
+                  <div key={g.key} className="mt-6">
+                    <h4 className="font-semibold text-ink">{g.title}</h4>
+                    <p className="mt-0.5 text-xs text-muted">{g.blurb}</p>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      {inGroup.map((s) => {
+                        const on = service?.id === s.id;
+                        const specs = s.specs.split("\n").filter(Boolean);
+                        return (
+                          <button
+                            key={s.id}
+                            data-testid="service-option"
+                            data-slug={s.slug}
+                            onClick={() => { setService(s); setSlot(null); }}
+                            className={`flex flex-col rounded-xl border p-5 text-left transition ${
+                              on ? "border-crimson bg-crimson/[0.05]" : "border-ink/12 hover:border-crimson/50"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <span className="block font-semibold text-ink">{s.name}</span>
+                                {s.size_label && <span className="text-sm text-muted">{s.size_label}</span>}
+                              </div>
+                              <div className="shrink-0 text-right">
+                                <span className="block font-display text-lg font-bold text-crimson">
+                                  {s.price_display}
+                                </span>
+                                {s.price_note && (
+                                  <span className="block text-[10px] text-muted">{s.price_note}</span>
+                                )}
+                              </div>
+                            </div>
+                            <ul className="mt-3 space-y-1.5">
+                              {specs.map((sp) => (
+                                <li key={sp} className="flex items-start gap-2 text-xs text-muted">
+                                  <CheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-crimson" />
+                                  {sp}
+                                </li>
+                              ))}
+                            </ul>
+                            <span className="mt-4 flex items-center gap-1.5 text-xs font-medium text-ink/60">
+                              <ClockIcon className="h-3.5 w-3.5" /> {s.duration_min} min appointment
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
@@ -275,8 +333,8 @@ export default function BookingWizard() {
             <div data-step="confirm">
               <h3 className="font-display text-xl font-semibold text-ink">Confirm your appointment</h3>
               <dl className="mt-5 divide-y divide-ink/10 text-sm">
-                <Row k="Photo" v={`${service.name} · ${service.size_label}`} />
-                <Row k="Price" v={priceLabel(service.price_cents)} />
+                <Row k="Service" v={serviceLine(service)} />
+                <Row k="Price" v={priceLine(service)} />
                 <Row k="Date" v={date} />
                 <Row k="Time" v={`${minutesToLabel(slot.min)} – ${minutesToLabel(slot.min + service.duration_min)}`} />
                 <Row k="Name" v={name} />
@@ -299,7 +357,7 @@ export default function BookingWizard() {
               <span className="font-semibold text-crimson">{service.name}</span>
               {slot && <span className="text-ink/50"> · {date} {slot.label}</span>}
             </span>
-            <span className="font-semibold text-crimson">{service.duration_min} min · {priceLabel(service.price_cents)}</span>
+            <span className="font-semibold text-crimson">{service.duration_min} min · {service.price_display}</span>
           </div>
         )}
 
@@ -364,6 +422,16 @@ function Row({ k, v }: { k: string; v: string }) {
   );
 }
 
+/** "Canada Visa Photo · 35 × 45 mm", or just the name for studio work. */
+function serviceLine(s: Service): string {
+  return s.size_label ? `${s.name} · ${s.size_label}` : s.name;
+}
+
+/** "$30 for 2 prints", "No charge · 30 minute consult". */
+function priceLine(s: Service): string {
+  return s.price_note ? `${s.price_display} · ${s.price_note}` : s.price_display;
+}
+
 function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void }) {
   const s = booking.service;
   return (
@@ -380,13 +448,14 @@ function Confirmation({ booking, onAgain }: { booking: any; onAgain: () => void 
         <span className="font-semibold text-crimson" data-testid="booking-ref">{booking.reference}</span>.
       </p>
       <div className="mx-auto mt-6 max-w-sm rounded-xl border border-ink/10 bg-paper p-5 text-left text-sm">
-        <Row k="Photo" v={`${s.name} · ${s.size_label}`} />
-        <Row k="Price" v={priceLabel(s.price_cents)} />
+        <Row k="Service" v={serviceLine(s)} />
+        <Row k="Price" v={priceLine(s)} />
         <Row k="Date" v={booking.date} />
         <Row k="Time" v={`${minutesToLabel(booking.start)} – ${minutesToLabel(booking.end)}`} />
       </div>
       <p className="mt-6 text-sm text-muted">
-        See you at 623 Broughton St, Victoria. A confirmation email is on its way, and our studio has been notified.
+        See you at 623 Broughton St, Victoria. Your slot is held and the studio has been
+        notified. Quote your reference if you need to move it: (778) 433-8257.
       </p>
       <div className="mt-6 flex justify-center gap-3">
         <a href="/" className="btn-outline !px-5 !py-2 text-sm">Back to home</a>

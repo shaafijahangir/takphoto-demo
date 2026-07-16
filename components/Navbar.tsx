@@ -8,7 +8,7 @@ const LINKS = [
   { href: "/#work", label: "Work" },
   { href: "/#services", label: "Services" },
   { href: "/#pricing", label: "Pricing" },
-  { href: "/book", label: "Passport & Visa" },
+  { href: "/book", label: "Book Online" },
   { href: "/#why", label: "Why Us" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -68,7 +68,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <a href="/book" className="btn-primary !px-5 !py-2 text-sm">
-              Book Visa Photo
+              Book Now
             </a>
             <button
               onClick={() => setOpen((o) => !o)}

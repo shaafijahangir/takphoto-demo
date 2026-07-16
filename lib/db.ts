@@ -20,10 +20,15 @@ function init(): DatabaseSync {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       slug TEXT NOT NULL UNIQUE,
       name TEXT NOT NULL,
-      country TEXT NOT NULL,
-      size_label TEXT NOT NULL,
+      -- 'gov' = fixed-price government photo, 'studio' = session or consultation.
+      category TEXT NOT NULL DEFAULT 'gov',
+      country TEXT NOT NULL DEFAULT '',
+      size_label TEXT NOT NULL DEFAULT '',
       duration_min INTEGER NOT NULL,
       price_cents INTEGER NOT NULL,
+      -- What the customer sees. Studio work is quoted, so the number alone is not enough.
+      price_display TEXT NOT NULL DEFAULT '',
+      price_note TEXT NOT NULL DEFAULT '',
       description TEXT NOT NULL DEFAULT '',
       specs TEXT NOT NULL DEFAULT ''
     );
